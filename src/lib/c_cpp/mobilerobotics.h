@@ -3,12 +3,12 @@
 
 typedef struct
 {
-    float value[3];
+    float values[3];
 }Value3;
 
 typedef struct
 {
-    float value[2];
+    float values[2];
 }Value2;
 
 typedef struct
@@ -34,7 +34,9 @@ float* getDataFloat();
 float setData(char *name, int size, char *data);
 float setDataFloat(char *name, int size, float *data);
 
+void initLidar(LidarData &lidarData, int size);
 void readLidar(LidarData &lidarData);
+void initCamera(CameraData &cameraData);
 void captureCamera(CameraData &cameraData);
 void getPose(Value3 &pose);
 void setPose(Value3 &pose);
