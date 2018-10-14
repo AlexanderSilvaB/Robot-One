@@ -7,6 +7,10 @@ public class FileManager
 {
     public static string OpenFile(string title ="", string directory = "", string extension = "")
     {
-        return title;//EditorUtility.OpenFilePanel(title, directory, extension);
+        #if UNITY_EDITOR
+        return EditorUtility.OpenFilePanel(title, directory, extension);
+        #else
+        return title;
+        #endif
     }
 }
