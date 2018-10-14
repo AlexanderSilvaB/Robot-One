@@ -41,7 +41,7 @@ bool Handler(char *data)
 	return true;
 }
 
-extern "C" __declspec(dllexport) int Connect(char *address)
+extern "C" __declspec(dllexport) int connect(char *address)
 {
 	if (s != NULL)
 		return 1;
@@ -50,7 +50,7 @@ extern "C" __declspec(dllexport) int Connect(char *address)
 	return connected ? 1 : 0;
 }
 
-extern "C" __declspec(dllexport) int Disconnect()
+extern "C" __declspec(dllexport) int disconnect()
 {
 	if (s == NULL)
 		return 0;
@@ -59,12 +59,12 @@ extern "C" __declspec(dllexport) int Disconnect()
 	return 1;
 }
 
-extern "C" __declspec(dllexport) float Version()
+extern "C" __declspec(dllexport) float version()
 {
 	return VERSION;
 }
 
-extern "C" __declspec(dllexport) float Wait()
+extern "C" __declspec(dllexport) float wait()
 {
 	if (s == NULL || !s->isConnected())
 		return 0.0f;
@@ -83,17 +83,17 @@ extern "C" __declspec(dllexport) float Wait()
 	return retValue;
 }
 
-extern "C" __declspec(dllexport) char* GetData()
+extern "C" __declspec(dllexport) char* getData()
 {
 	return dataContainer;
 }
 
-extern "C" __declspec(dllexport) float* GetDataFloat()
+extern "C" __declspec(dllexport) float* getDataFloat()
 {
 	return (float*)dataContainer;
 }
 
-extern "C" __declspec(dllexport) float Get(char *name)
+extern "C" __declspec(dllexport) float get(char *name)
 {
 	if (s == NULL || !s->isConnected())
 		return 0.0f;
@@ -112,7 +112,7 @@ extern "C" __declspec(dllexport) float Get(char *name)
 	return retValue;
 }
 
-extern "C" __declspec(dllexport) float Set(char *name, float value)
+extern "C" __declspec(dllexport) float set(char *name, float value)
 {
 	if (s == NULL || !s->isConnected())
 		return 0.0f;
@@ -134,7 +134,7 @@ extern "C" __declspec(dllexport) float Set(char *name, float value)
 	return retValue;
 }
 
-extern "C" __declspec(dllexport) float SetData(char *name, int size, char *data)
+extern "C" __declspec(dllexport) float setData(char *name, int size, char *data)
 {
 	if (s == NULL || !s->isConnected())
 		return 0.0f;
@@ -165,7 +165,7 @@ extern "C" __declspec(dllexport) float SetData(char *name, int size, char *data)
 	return retValue;
 }
 
-extern "C" __declspec(dllexport) float SetDataFloat(char *name, int size, float *data)
+extern "C" __declspec(dllexport) float setDataFloat(char *name, int size, float *data)
 {
 	if (s == NULL || !s->isConnected())
 		return 0.0f;

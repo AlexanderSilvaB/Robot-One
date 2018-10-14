@@ -36,30 +36,30 @@ def connect(address = None):
         except:
             print("mobilerobotics not found")
             return None
-    mobilerobotics.Connect.restype = c_int
-    mobilerobotics.Disconnect.restype = c_int
-    mobilerobotics.Version.restype = c_float
-    mobilerobotics.Wait.restype = c_float
-    mobilerobotics.Get.restype = c_float
-    mobilerobotics.Set.restype = c_float
-    mobilerobotics.SetData.restype = c_float
-    mobilerobotics.SetDataFloat.restype = c_float
-    status = mobilerobotics.Connect(c_char_p(address.encode('utf-8')))
+    mobilerobotics.connect.restype = c_int
+    mobilerobotics.disconnect.restype = c_int
+    mobilerobotics.version.restype = c_float
+    mobilerobotics.wait.restype = c_float
+    mobilerobotics.get.restype = c_float
+    mobilerobotics.set.restype = c_float
+    mobilerobotics.setData.restype = c_float
+    mobilerobotics.setDataFloat.restype = c_float
+    status = mobilerobotics.connect(c_char_p(address.encode('utf-8')))
     return mobilerobotics
 
 def disconnect(mobilerobotics):
-    return mobilerobotics.Disconnect()
+    return mobilerobotics.disconnect()
 
 def version(mobilerobotics):
-    return mobilerobotics.Version()
+    return mobilerobotics.version()
 
 def wait(mobilerobotics):
-    return mobilerobotics.Wait()
+    return mobilerobotics.wait()
 
 def readLidar(mobilerobotics):
     sz = int(get(mobilerobotics, "Lidar.Read"))
-    mobilerobotics.GetDataFloat.restype = POINTER(c_float * sz)
-    readings = mobilerobotics.GetDataFloat().contents
+    mobilerobotics.getDataFloat.restype = POINTER(c_float * sz)
+    readings = mobilerobotics.getDataFloat().contents
     data = [readings[i] for i in range(sz)]
     inc = math.pi / sz
     start = -(sz/2)*inc
@@ -75,8 +75,8 @@ def readLidar(mobilerobotics):
 
 def captureCamera(mobilerobotics):
     sz = int(get(mobilerobotics, "Camera.Capture"))
-    mobilerobotics.GetData.restype = POINTER(c_ubyte * sz)
-    data = mobilerobotics.GetData()
+    mobilerobotics.getData.restype = POINTER(c_ubyte * sz)
+    data = mobilerobotics.getData()
     return sz, data
 
 def cameraToPil(data):
@@ -92,10 +92,10 @@ def cameraToCV(data):
     return im
 
 def get(mobilerobotics, name):
-    return mobilerobotics.Get(c_char_p(name.encode('utf-8')))
+    return mobilerobotics.get(c_char_p(name.encode('utf-8')))
 
 def set(mobilerobotics, name, value):
-    return mobilerobotics.Set(c_char_p(name.encode('utf-8')), c_float(value))
+    return mobilerobotics.set(c_char_p(name.encode('utf-8')), c_float(value))
 
 def pose(mobilerobotics, p = None):
     if p == None:
