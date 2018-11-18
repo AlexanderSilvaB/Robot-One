@@ -1,4 +1,4 @@
-from mobilerobotics import *
+from migo import *
 import math as m
 from random import uniform
 import cv2

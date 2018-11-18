@@ -31,24 +31,22 @@ public class Lidar : MonoBehaviour
 	
 	void Update ()
     {
-        Debug.DrawRay(transform.position, transform.forward * RayLength, Color.red);
         Monitor.Enter(m_lock);
-        transform.localEulerAngles = new Vector3(currentAngle, 0, 0);
-        if (Physics.Raycast(transform.position, transform.forward, out raycast, RayLength))
-        {
-            Readings[currentIndex] = raycast.distance;
-        }
-        else
-        {
-            Readings[currentIndex] = -1;
-        }
 
-        currentAngle += angleIncrement;
-        currentIndex++;
-        if (currentAngle > endAngle)
+        currentAngle = startAngle;
+        for(currentIndex = 0; currentIndex < NumReadings; currentIndex++)
         {
-            currentAngle = startAngle;
-            currentIndex = 0;
+            currentAngle += angleIncrement;
+            transform.localEulerAngles = new Vector3(currentAngle, 0, 0);
+            Debug.DrawRay(transform.position, transform.forward * RayLength, Color.red);
+            if (Physics.Raycast(transform.position, transform.forward, out raycast, RayLength))
+            {
+                Readings[currentIndex] = raycast.distance;
+            }
+            else
+            {
+                Readings[currentIndex] = RayLength;
+            }
         }
         lastTime = Time.time;
         Monitor.Exit(m_lock);
