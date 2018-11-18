@@ -1,4 +1,4 @@
-from mobilerobotics import *
+from migo import *
 import cv2
 import math as m
 

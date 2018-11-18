@@ -2044,7 +2044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RayLength: 8
-  NumReadings: 21
+  NumReadings: 36
   AngleRange: 180
   readingTime: 0.03
 --- !u!114 &114395565963041978
