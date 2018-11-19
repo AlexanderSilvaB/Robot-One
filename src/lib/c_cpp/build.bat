@@ -1,7 +1,9 @@
 mkdir build
 cd build 
 g++ -c ../*.cpp
-g++ -shared -o libmobilerobotics.dll *.o -lwsock32
+g++ -shared -o libmigo.dll *.o -lwsock32
 cd ..
-copy /Y build\libmobilerobotics.dll export\libmobilerobotics.dll
-copy /Y mobilerobotics.h export\mobilerobotics.h
+mkdir export
+copy /Y build\libmigo.dll export\libmigo.dll
+REM copy /Y migo.h export\migo.h
+copy /Y migo_matlab.h export\migo.h
