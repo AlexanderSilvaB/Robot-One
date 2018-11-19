@@ -200,27 +200,27 @@ extern_c float setDataFloat(char *name, int size, float *data)
 }
 
 // Implementations
-extern_c void initLidar(LidarData &lidarData, int size)
+extern_c void initLidar(LidarData *lidarData, int size)
 {
-	if(lidarData.readings != NULL)
-		delete[] lidarData.readings;
-	if(lidarData.angles != NULL)
-		delete[] lidarData.angles;
-	if(lidarData.x != NULL)
-		delete[] lidarData.x;
-	if(lidarData.y != NULL)
-		delete[] lidarData.y;
-	lidarData.size = size;
-	lidarData.readings = new float[size];
-	lidarData.angles = new float[size];
-	lidarData.x = new float[size];
-	lidarData.y = new float[size];
+	if(lidarData->readings != NULL)
+		delete[] lidarData->readings;
+	if(lidarData->angles != NULL)
+		delete[] lidarData->angles;
+	if(lidarData->x != NULL)
+		delete[] lidarData->x;
+	if(lidarData->y != NULL)
+		delete[] lidarData->y;
+	lidarData->size = size;
+	lidarData->readings = new float[size];
+	lidarData->angles = new float[size];
+	lidarData->x = new float[size];
+	lidarData->y = new float[size];
 }
 
-extern_c void readLidar(LidarData &lidarData)
+extern_c void readLidar(LidarData *lidarData)
 {
 	int szI = (int)get("Lidar.Read");
-	if(lidarData.size != szI)
+	if(lidarData->size != szI)
 		initLidar(lidarData, szI);
 	float *readings = getDataFloat();
 	float sz = szI;
@@ -230,91 +230,91 @@ extern_c void readLidar(LidarData &lidarData)
 	float inc_ = M_PI_2;
 	for(int i = 0; i < sz; i++)
 	{
-		lidarData.readings[i] = readings[i];
-		lidarData.angles[i] = start + i*inc;
-		if(lidarData.readings[i] > 0)
+		lidarData->readings[i] = readings[i];
+		lidarData->angles[i] = start + i*inc;
+		if(lidarData->readings[i] > 0)
 		{
-			lidarData.x[i] = -lidarData.readings[i]*cos(inc_ + lidarData.angles[i]);
-			lidarData.y[i] =  lidarData.readings[i]*sin(inc_ + lidarData.angles[i]);
+			lidarData->x[i] = -lidarData->readings[i]*cos(inc_ + lidarData->angles[i]);
+			lidarData->y[i] =  lidarData->readings[i]*sin(inc_ + lidarData->angles[i]);
 		}
 		else
 		{
-			lidarData.x[i] = lidarData.y[i] = 0;
+			lidarData->x[i] = lidarData->y[i] = 0;
 		}
 	}
 }
 
-extern_c void initCamera(CameraData &cameraData)
+extern_c void initCamera(CameraData *cameraData)
 {
-	if(cameraData.data != NULL)
-		delete[] cameraData.data;
-	cameraData.width = 320;
-	cameraData.height = 240;
-	cameraData.channels = 3;
-	cameraData.size = cameraData.width * cameraData.height * cameraData.channels;
-	cameraData.data = new char[cameraData.size];
+	if(cameraData->data != NULL)
+		delete[] cameraData->data;
+	cameraData->width = 320;
+	cameraData->height = 240;
+	cameraData->channels = 3;
+	cameraData->size = cameraData->width * cameraData->height * cameraData->channels;
+	cameraData->data = new char[cameraData->size];
  }
 
 
-extern_c void captureCamera(CameraData &cameraData)
+extern_c void captureCamera(CameraData *cameraData)
 {
 	int sz = (int)get("Camera.Capture");
-	if(cameraData.size != sz)
+	if(cameraData->size != sz)
 		initCamera(cameraData);
 	char *data = getData();
-	memcpy(cameraData.data, data, sz);
+	memcpy(cameraData->data, data, sz);
 }
 
-extern_c void getPose(Value3 &pose)
+extern_c void getPose(Value3 *pose)
 {
-	pose.values[0] = get("Pose.X");
-	pose.values[1] = get("Pose.Y");
-	pose.values[2] = get("Pose.Theta");
+	pose->values[0] = get("Pose.X");
+	pose->values[1] = get("Pose.Y");
+	pose->values[2] = get("Pose.Theta");
 }
 
-extern_c void setPose(Value3 &pose)
+extern_c void setPose(Value3 *pose)
 {
-	set("Pose.X", pose.values[0]);
-	set("Pose.Y", pose.values[1]);
-	set("Pose.Theta", pose.values[2]);
+	set("Pose.X", pose->values[0]);
+	set("Pose.Y", pose->values[1]);
+	set("Pose.Theta", pose->values[2]);
 }
 
-extern_c void getOdometry(Value3 &pose)
+extern_c void getOdometry(Value3 *pose)
 {
-	pose.values[0] = get("Odometry.X");
-	pose.values[1] = get("Odometry.Y");
-	pose.values[2] = get("Odometry.Theta");
+	pose->values[0] = get("Odometry.X");
+	pose->values[1] = get("Odometry.Y");
+	pose->values[2] = get("Odometry.Theta");
 }
 
-extern_c void setOdometry(Value3 &pose)
+extern_c void setOdometry(Value3 *pose)
 {
-	set("Odometry.X", pose.values[0]);
-	set("Odometry.Y", pose.values[1]);
-	set("Odometry.Theta", pose.values[2]);
+	set("Odometry.X", pose->values[0]);
+	set("Odometry.Y", pose->values[1]);
+	set("Odometry.Theta", pose->values[2]);
 }
 
-extern_c void getOdometryStd(Value2 &odometryStd)
+extern_c void getOdometryStd(Value2 *odometryStd)
 {
-	odometryStd.values[0] = get("Odometry.Std.Linear");
-	odometryStd.values[1] = get("Odometry.Std.Angular");	
+	odometryStd->values[0] = get("Odometry.Std.Linear");
+	odometryStd->values[1] = get("Odometry.Std.Angular");	
 }
 
-extern_c void setOdometryStd(Value2 &odometryStd)
+extern_c void setOdometryStd(Value2 *odometryStd)
 {
-	set("Odometry.Std.Linear", odometryStd.values[0]);
-	set("Odometry.Std.Angular", odometryStd.values[1]);
+	set("Odometry.Std.Linear", odometryStd->values[0]);
+	set("Odometry.Std.Angular", odometryStd->values[1]);
 }
 
-extern_c void getVelocity(Value2 &velocity)
+extern_c void getVelocity(Value2 *velocity)
 {
-	velocity.values[0] = get("Velocity.Linear");
-	velocity.values[1] = get("Velocity.Angular");		
+	velocity->values[0] = get("Velocity.Linear");
+	velocity->values[1] = get("Velocity.Angular");		
 }
 
-extern_c void setVelocity(Value2 &velocity)
+extern_c void setVelocity(Value2 *velocity)
 {
-	set("Velocity.Linear", velocity.values[0]);
-	set("Velocity.Angular", velocity.values[1]);
+	set("Velocity.Linear", velocity->values[0]);
+	set("Velocity.Angular", velocity->values[1]);
 }
 
 extern_c bool getLowLevelControl()
@@ -337,14 +337,14 @@ extern_c void setTrace(bool enabled)
 	set("Trace", enabled ? 1.0f : 0.0f);
 }
 
-extern_c void getWheels(Value2 &wheels)
+extern_c void getWheels(Value2 *wheels)
 {
-	wheels.values[0] = get("Velocity.Angular.Left");
-	wheels.values[1] = get("Velocity.Angular.Right");
+	wheels->values[0] = get("Velocity.Angular.Left");
+	wheels->values[1] = get("Velocity.Angular.Right");
 }
 
-extern_c void setWheels(Value2 &wheels)
+extern_c void setWheels(Value2 *wheels)
 {
-	set("Velocity.Angular.Left", wheels.values[0]);
-	set("Velocity.Angular.Right", wheels.values[1]);
+	set("Velocity.Angular.Left", wheels->values[0]);
+	set("Velocity.Angular.Right", wheels->values[1]);
 }

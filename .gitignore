@@ -3,7 +3,12 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+export/
 Assets/AssetStoreTools*
+
+# Matlab
+*.prj
+*.asv
 
 # Visual Studio cache directory
 .vs/
