@@ -1,8 +1,8 @@
 clear; close all; clc;
-disconnectMigo(1);
+disconnectRobotOne(1);
 
-handler = connectMigo('127.0.0.1');
-traceMigo(handler, true);
+handler = connectRobotOne('127.0.0.1');
+traceRobotOne(handler, true);
 
 for n = 1:100
    readings = readLidar(handler)
@@ -16,8 +16,8 @@ for n = 1:100
    w = deg2rad(20)*randn();
    p = 4.0;
    velocity(handler, [p w]);
-   waitMigo(handler)
+   waitRobotOne(handler)
 end
 
-traceMigo(handler, false);
-disconnectMigo(handler);
+traceRobotOne(handler, false);
+disconnectRobotOne(handler);

@@ -1,0 +1,5 @@
+softwares/gcc-4.9.2-x64.zip filter=lfs diff=lfs merge=lfs -text
+softwares/gcc-5.3.0-x64.zip filter=lfs diff=lfs merge=lfs -text
+softwares/gcc-6.3.0-x64.zip filter=lfs diff=lfs merge=lfs -text
+softwares/gcc-8.2.0-x86.zip filter=lfs diff=lfs merge=lfs -text
+softwares/python-2.7.16.msi filter=lfs diff=lfs merge=lfs -text

@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.8)
 SET(CMAKE_INSTALL_PREFIX ../)
-project(migo)
+project(robotOne)
 
 include_directories(.)
 
 set(SRC 
-    migo.h
-    migo.cpp
+    robotOne.h
+    robotOne.cpp
     TcpUdpSocket.h
     TcpUdpSocket.cpp)
 

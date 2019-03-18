@@ -1,9 +1,9 @@
-from migo import *
+import robotOne as ro
 import cv2
 import math as m
 
-handler = connect()
-trace(handler, True)
+handler = ro.connect()
+ro.trace(handler, True)
 
 MaxV = 5.0
 road_color_min = np.array([0, 0, 0],np.uint8)
@@ -11,8 +11,8 @@ road_color_max = np.array([255, 90, 180],np.uint8)
 
 try:
     while True:
-        sz, buff = captureCamera(handler)
-        img = cameraToCV(buff)
+        sz, buff = ro.captureCamera(handler)
+        img = ro.cameraToCV(buff)
 
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, road_color_min, road_color_max)
@@ -36,7 +36,7 @@ try:
 
         
 
-        velocity(handler, [MaxV, w])
+        ro.velocity(handler, [MaxV, w])
 
         cv2.imshow("image", img)
         cv2.imshow("mask", mask)
@@ -46,5 +46,5 @@ try:
 except Exception, e:
     print(e)
 
-trace(handler, False)
-disconnect(handler)
+ro.trace(handler, False)
+ro.disconnect(handler)

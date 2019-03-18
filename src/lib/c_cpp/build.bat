@@ -1,9 +1,10 @@
 mkdir build
 cd build 
-g++ -c ../*.cpp
-g++ -shared -o libmigo.dll *.o -lwsock32
+x86_64-w64-mingw32-g++.exe -c ../robotOne.cpp
+x86_64-w64-mingw32-g++.exe -c ../TcpUdpSocket.cpp
+x86_64-w64-mingw32-g++.exe -shared -o librobotOne.dll robotOne.o TcpUdpSocket.o -lwsock32
 cd ..
 mkdir export
-copy /Y build\libmigo.dll export\libmigo.dll
-REM copy /Y migo.h export\migo.h
-copy /Y migo_matlab.h export\migo.h
+copy /Y build\librobotOne.dll export\librobotOne.dll
+copy /Y robotOne_matlab.h export\robotOne.h
+pause

@@ -1,5 +1,5 @@
-handler = connectMigo('127.0.0.1');
-traceMigo(handler, true);
+handler = connectRobotOne('127.0.0.1');
+traceRobotOne(handler, true);
 
 Kp = 0.1818181818181818;
 Ka = 0.4191980558930741;
@@ -31,7 +31,7 @@ for i = 1:size(GL, 1)
        else
            break
        end
-       t = waitMigo(handler)
+       t = waitRobotOne(handler)
    end
 end
 
@@ -40,5 +40,5 @@ R = pose(handler);
 disp(G);
 disp(R);
 
-traceMigo(handler, false);
-disconnectMigo(handler);
+traceRobotOne(handler, false);
+disconnectRobotOne(handler);

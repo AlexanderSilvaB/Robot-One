@@ -1,8 +1,8 @@
 clear; close all; clc;
-disconnectMigo(1);
+disconnectRobotOne(1);
 
-handler = connectMigo('127.0.0.1');
-traceMigo(handler, true);
+handler = connectRobotOne('127.0.0.1');
+traceRobotOne(handler, true);
 
 MaxV = 5.0;
 
@@ -36,8 +36,8 @@ for n = 1:1000
    imshow(rgb)
    figure(2)
    imshow(mask)
-   waitMigo(handler)
+   waitRobotOne(handler)
 end
 
-traceMigo(handler, false);
-disconnectMigo(handler);
+traceRobotOne(handler, false);
+disconnectRobotOne(handler);
