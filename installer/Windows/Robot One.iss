@@ -87,5 +87,6 @@ Filename: "{app}\matlab.bat"; Tasks: install_matlab; Check: IsWin64(); StatusMsg
 Filename: "{tmp}\unzip.exe"; Parameters: "-n -qq {tmp}\lib-x64.zip -d C:\robot-one\lib"; Check: IsWin64(); StatusMsg: "Installing libraries"; Flags: runhidden    
 Filename: "{tmp}\unzip.exe"; Parameters: "-n -qq {tmp}\lib-x86.zip -d C:\robot-one\lib"; Check: not IsWin64(); StatusMsg: "Installing libraries"; Flags: runhidden
 Filename: "{app}\modpath.exe"; Parameters: "/add ""C:\robot-one\lib"""; StatusMsg: "Adding libraries to path";  
+Filename: "xcopy.exe"; Parameters: "C:\robot-one\lib\librobotOne.dll C:\robot-one\python\Lib\site-packages /y"; Tasks: install_python; StatusMsg: "Python support: Merging libraries"; Flags: runhidden
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
