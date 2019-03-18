@@ -1,0 +1,1 @@
+In order to use create image processing applications with python, it is recomended to install OpenCV or PIL for Python

@@ -1,6 +1,6 @@
 function readings = readLidar(handler)
-    if libisloaded('libmigo') && handler == 1
-        sz = getMigo(handler, 'Lidar.Read');
+    if libisloaded('librobotOne') && handler == 1
+        sz = getRobotOne(handler, 'Lidar.Read');
         readings.size = sz;
         if sz == 0
             readings.distances = 0;

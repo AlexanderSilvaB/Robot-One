@@ -1,3 +1,6 @@
+clear; close all; clc;
+disconnectRobotOne(1);
+
 handler = connectRobotOne('127.0.0.1');
 traceRobotOne(handler, true);
 
