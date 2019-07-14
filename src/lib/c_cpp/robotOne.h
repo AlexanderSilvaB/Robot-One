@@ -1,7 +1,11 @@
 #ifndef ROBOT_ONE_H_
 #define ROBOT_ONE_H_
 
+#ifdef WIN32
 #define extern_c extern "C" __declspec(dllexport)
+#else
+#define extern_c extern "C" 
+#endif
 
 typedef struct
 {

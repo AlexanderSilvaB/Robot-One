@@ -9,6 +9,7 @@ public class Lidar : MonoBehaviour
     public int NumReadings = 11;
     public float AngleRange = 180;
     public float readingTime = 0.03f;
+    public float Std = 0.0f;
 
     private float[] Readings;
     private float angleIncrement;

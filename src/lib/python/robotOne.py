@@ -17,6 +17,8 @@ def fixAngle(rad):
     rad = math.fmod(rad, math.pi * 2)
     if rad > math.pi:
         rad = rad - (2 * math.pi)
+    elif rad < -math.pi:
+        rad = rad + (2 * math.pi)
     return rad
 
 def connect(address = None):

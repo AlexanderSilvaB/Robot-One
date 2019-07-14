@@ -607,6 +607,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114442352403073964, guid: 7585db4f5fd7b084789354da689180fd,
+        type: 3}
+      propertyPath: WorldCameraSelector
+      value: 
+      objectReference: {fileID: 334350765}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7585db4f5fd7b084789354da689180fd, type: 3}
 --- !u!1001 &384615855

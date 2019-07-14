@@ -64,6 +64,25 @@ public class CameraSelector : MonoBehaviour
 		Distance = d;
 	}
 
+    public void ChooseCamera(string camera)
+    {
+        for (int i = 0; i < Titles.Length; i++)
+        {
+            if (camera == Titles[i])
+            {
+                selectedCamera = (Cameras)i;
+                ChooseCamera();
+                break;
+            }
+        }
+    }
+
+    public void ChooseCamera(Cameras camera)
+    {
+        selectedCamera = camera;
+        ChooseCamera();
+    }
+
 	private void ChooseCamera()
 	{
 		switch (selectedCamera)

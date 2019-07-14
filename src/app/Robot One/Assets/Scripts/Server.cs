@@ -13,6 +13,7 @@ public class Server : MonoBehaviour
     public Camera RobotCamera;
     public Lidar RobotLidar;
     public ManualController manualController;
+    public CameraSelector WorldCameraSelector;
 
     private readonly System.Object m_lock = new System.Object();
     private Thread thread;
@@ -34,6 +35,8 @@ public class Server : MonoBehaviour
     {
         if (kinematics == null)
             kinematics = GetComponent<DifferentialKinematics>();
+        if (WorldCameraSelector == null)
+            WorldCameraSelector = GetComponent<CameraSelector>();
 
         if (RobotCamera == null)
             RobotCamera = Camera.main;
@@ -160,6 +163,46 @@ public class Server : MonoBehaviour
                                 retData = new byte[readings.Length * 4];
                                 Buffer.BlockCopy(readings, 0, retData, 0, retData.Length);
                                 ret = readings.Length;
+                            }
+                            else if (name == "Lidar.Std")
+                                ret = RobotLidar.Std;
+                            else if (name == "World.Camera.Mode")
+                                ret = (int)WorldCameraSelector.SelectedCamera;
+                            else if (name == "World.Camera.Zoom")
+                                ret = WorldCameraSelector.Distance;
+                            else if (name == "GPS.X")
+                                ret = kinematics.GPS.x;
+                            else if (name == "GPS.Y")
+                                ret = kinematics.GPS.y;
+                            else if (name == "GPS.Theta")
+                                ret = kinematics.GPS.z;
+                            else if (name == "GPS")
+                            {
+                                retData = new byte[3 * 4];
+                                byte[] bytes = BitConverter.GetBytes(kinematics.GPS.x);
+                                Array.Copy(bytes, 0, retData, 0, 4);
+                                bytes = BitConverter.GetBytes(kinematics.GPS.y);
+                                Array.Copy(bytes, 0, retData, 4, 4);
+                                bytes = BitConverter.GetBytes(kinematics.GPS.z);
+                                Array.Copy(bytes, 0, retData, 8, 4);
+                                ret = 3;
+                            }
+                            else if (name == "GPS.Std.X")
+                                ret = kinematics.GPSStd.x;
+                            else if (name == "GPS.Std.Y")
+                                ret = kinematics.GPSStd.y;
+                            else if (name == "GPS.Std.Theta")
+                                ret = kinematics.GPSStd.z;
+                            else if (name == "GPS.Std")
+                            {
+                                retData = new byte[3 * 4];
+                                byte[] bytes = BitConverter.GetBytes(kinematics.GPSStd.x);
+                                Array.Copy(bytes, 0, retData, 0, 4);
+                                bytes = BitConverter.GetBytes(kinematics.GPSStd.y);
+                                Array.Copy(bytes, 0, retData, 4, 4);
+                                bytes = BitConverter.GetBytes(kinematics.GPSStd.z);
+                                Array.Copy(bytes, 0, retData, 8, 4);
+                                ret = 3;
                             }
                             else if (name == "Pose.X")
                                 ret = kinematics.Pose.x;
@@ -295,6 +338,43 @@ public class Server : MonoBehaviour
                             {
                                 kinematics.Trace = value > 0;
                                 ret = kinematics.Trace ? 1.0f : 0.0f;
+                            }
+                            else if (name == "Lidar.Std")
+                            {
+                                RobotLidar.Std = value;
+                                ret = RobotLidar.Std;
+                            }
+                            else if (name == "GPS.Std.X")
+                            {
+                                kinematics.GPSStd.x = value;
+                                ret = kinematics.GPSStd.x;
+                            }
+                            else if (name == "GPS.Std.Y")
+                            {
+                                kinematics.GPSStd.y = value;
+                                ret = kinematics.GPSStd.y;
+                            }
+                            else if (name == "GPS.Std.Theta")
+                            {
+                                kinematics.GPSStd.z = value;
+                                ret = kinematics.GPSStd.z;
+                            }
+                            else if (name == "World.Camera.Mode")
+                            {
+                                int v = (int)value;
+                                if(v >= 0 && v < 3)
+                                    WorldCameraSelector.ChooseCamera((CameraSelector.Cameras)v);
+                                ret = (int)WorldCameraSelector.SelectedCamera;
+                            }
+                            else if (name == "World.Camera.Zoom")
+                            {
+                                WorldCameraSelector.DistanceChanged(value);
+                                ret = WorldCameraSelector.Distance;
+                            }
+                            else if (name == "GPS.Std.Theta")
+                            {
+                                kinematics.GPSStd.z = value;
+                                ret = kinematics.GPSStd.z;
                             }
                         }
 

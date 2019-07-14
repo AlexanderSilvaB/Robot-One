@@ -15,7 +15,7 @@ public class DifferentialKinematics : MonoBehaviour {
     public LineRenderer PoseTrace;
     public LineRenderer OdometryTrace;
     private Rigidbody rigidbody, rigidbodyOdometry;
-    private Vector3 currentPose, nextPose, odometryPose;
+    private Vector3 currentPose, nextPose, odometryPose, currentGPS;
     private bool changePose, reset;
     public Vector3 Pose
     {
@@ -32,8 +32,16 @@ public class DifferentialKinematics : MonoBehaviour {
             return odometryPose;
         }
     }
+    public Vector3 GPS
+    {
+        get
+        {
+            return currentGPS;
+        }
+    }
 
     public Vector2 MotionStd = Vector2.zero;
+    public Vector3 GPSStd = Vector3.zero;
 
     private Vector3 lastPosePoint = Vector3.zero;
     private Vector3 lastOdometryPoint = Vector3.zero;
@@ -206,6 +214,7 @@ public class DifferentialKinematics : MonoBehaviour {
 
         currentPose.Set(transform.position.z, -transform.position.x, -KinematicsUtils.FixAngle(transform.rotation.eulerAngles.y * Mathf.Deg2Rad));
         odometryPose.Set(OdometryTransform.position.z, -OdometryTransform.position.x, -KinematicsUtils.FixAngle(OdometryTransform.rotation.eulerAngles.y * Mathf.Deg2Rad));
+        currentGPS.Set(currentPose.x + (float)KinematicsUtils.randn(0, GPSStd.x), currentPose.y + (float)KinematicsUtils.randn(0, GPSStd.y), currentPose.z + (float)KinematicsUtils.randn(0, GPSStd.z));
         
 
         if(trace)

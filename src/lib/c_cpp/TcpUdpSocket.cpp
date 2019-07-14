@@ -113,7 +113,7 @@ bool TcpUdpSocket::wait()
 	if(client != -1)
 		return true;
 	int clientlen = sizeof(outaddr);
-	client = accept(sock, (struct sockaddr *) &outaddr, &clientlen);
+	client = accept(sock, (struct sockaddr *) &outaddr, (socklen_t*)&clientlen);
 	return client >= 0;
 }
 

@@ -1,6 +1,7 @@
 import robotOne as ro
 import cv2
 import math as m
+import numpy as np
 
 handler = ro.connect()
 ro.trace(handler, True)
