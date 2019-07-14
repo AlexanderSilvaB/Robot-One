@@ -16,13 +16,15 @@ echo "Installing Python Library..."
 mkdir -p ~/robot-one/lib/python
 cp lib/python/robotOne.py ~/robot-one/lib/python/robotOne.py
 
-echo "Installing Matlab Library..."
-mkdir -p ~/robot-one/lib/matlab
-cp -r lib/matlab/robotOne ~/robot-one/lib/matlab/
+#echo "Installing Matlab Library..."
+#mkdir -p ~/robot-one/lib/matlab
+#cp -r lib/matlab/robotOne ~/robot-one/lib/matlab/
 
 echo "Installing examples..."
 mkdir -p ~/robot-one/examples
 cp -r examples ~/robot-one/
+
+echo "Hint: The matlab examples still do not work out-of-the-box"
 
 echo "Setting Python path"
 echo "export PYTHONPATH=\"${PYTHONPATH}:${HOME}/robot-one/lib/python\"" >> ~/.bashrc
