@@ -4,7 +4,16 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+
+#define _USE_MATH_DEFINES
 #include <cmath>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+#ifndef M_PI_2
+#define M_PI_2 1.57079632679489661923
+#endif
 
 #define PORT 5046
 #define VERSION 1.0
@@ -40,7 +49,7 @@ bool Handler(char *data)
 	return true;
 }
 
-extern_c int connectRobotOne(char *address)
+extern_c int connectRobotOne(const char *address)
 {
 	if (s != NULL)
 		return 1;
@@ -214,7 +223,7 @@ extern_c void initLidar(LidarData *lidarData, int size)
 	lidarData->y = new float[size];
 }
 
-extern_c void readLidar(LidarData *lidarData)
+extern_c int readLidar(LidarData *lidarData)
 {
 	int szI = (int)get("Lidar.Read");
 	if(lidarData->size != szI)
@@ -239,6 +248,7 @@ extern_c void readLidar(LidarData *lidarData)
 			lidarData->x[i] = lidarData->y[i] = 0;
 		}
 	}
+	return szI;
 }
 
 extern_c void initCamera(CameraData *cameraData)
@@ -253,13 +263,12 @@ extern_c void initCamera(CameraData *cameraData)
  }
 
 
-extern_c void captureCamera(CameraData *cameraData)
+extern_c int captureCamera(CameraData *cameraData)
 {
 	int sz = (int)get("Camera.Capture");
-	if(cameraData->size != sz)
-		initCamera(cameraData);
 	char *data = getData();
-	memcpy(cameraData->data, data, sz);
+	memcpy(cameraData->data, data, cameraData->size);
+	return sz;
 }
 
 extern_c void getPose(Value3 *pose)
@@ -300,6 +309,27 @@ extern_c void setOdometryStd(Value2 *odometryStd)
 {
 	set("Odometry.Std.Linear", odometryStd->values[0]);
 	set("Odometry.Std.Angular", odometryStd->values[1]);
+}
+
+extern_c void getGPS(Value3 *gps)
+{
+	gps->values[0] = get("GPS.X");
+	gps->values[1] = get("GPS.Y");
+	gps->values[2] = get("GPS.Theta");
+}
+
+extern_c void getGPSStd(Value3 *gpsStd)
+{
+	gpsStd->values[0] = get("GPS.Std.X");
+	gpsStd->values[1] = get("GPS.Std.Y");	
+	gpsStd->values[2] = get("GPS.Std.Theta");	
+}
+
+extern_c void setGPSStd(Value3 *gpsStd)
+{
+	set("GPS.Std.X", gpsStd->values[0]);
+	set("GPS.Std.Y", gpsStd->values[1]);
+	set("GPS.Std.Theta", gpsStd->values[2]);
 }
 
 extern_c void getVelocity(Value2 *velocity)

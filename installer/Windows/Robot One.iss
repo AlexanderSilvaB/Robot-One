@@ -39,7 +39,7 @@ Name: "install_matlab"; Description: "Install Matlab support (Not supported in 3
 [Files]
 Source: "{#FilesFolder}\build\Windows\Robot One.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#FilesFolder}\build\Windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#FilesFolder}\src\examples\*"; DestDir: "{app}\examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#FilesFolder}\src\examples\*"; Excludes: "build*"; DestDir: "{app}\examples"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#FilesFolder}\softwares\modpath.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#FilesFolder}\softwares\matlab.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#FilesFolder}\docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -84,8 +84,8 @@ Filename: "{tmp}\unzip.exe"; Parameters: "-n -qq {tmp}\gcc-5.3.0-x64.zip -d C:\r
 ;Filename: "{tmp}\unzip.exe"; Parameters: "-n -qq {tmp}\gcc-6.3.0-x86.zip -d C:\robot-one\mingw"; Tasks: install_matlab; Check: not IsWin64(); StatusMsg: "Installing MinGW 6.3.0"; Flags: runhidden  
 Filename: "{tmp}\unzip.exe"; Parameters: "-n -qq {tmp}\gcc-6.3.0-x64.zip -d C:\robot-one\mingw"; Tasks: install_matlab; Check: IsWin64(); StatusMsg: "Matlab support: Installing MinGW 6.3.0"; Flags: runhidden         
 Filename: "{app}\matlab.bat"; Tasks: install_matlab; Check: IsWin64(); StatusMsg: "Matlab support: Configuring version"; Flags: skipifsilent 
-Filename: "{tmp}\unzip.exe"; Parameters: "-n -qq {tmp}\lib-x64.zip -d C:\robot-one\lib"; Check: IsWin64(); StatusMsg: "Installing libraries"; Flags: runhidden    
-Filename: "{tmp}\unzip.exe"; Parameters: "-n -qq {tmp}\lib-x86.zip -d C:\robot-one\lib"; Check: not IsWin64(); StatusMsg: "Installing libraries"; Flags: runhidden
+Filename: "{tmp}\unzip.exe"; Parameters: "-o -qq {tmp}\lib-x64.zip -d C:\robot-one\lib"; Check: IsWin64(); StatusMsg: "Installing libraries"; Flags: runhidden    
+Filename: "{tmp}\unzip.exe"; Parameters: "-o -qq {tmp}\lib-x86.zip -d C:\robot-one\lib"; Check: not IsWin64(); StatusMsg: "Installing libraries"; Flags: runhidden
 Filename: "{app}\modpath.exe"; Parameters: "/add ""C:\robot-one\lib"""; StatusMsg: "Adding libraries to path";  
 Filename: "xcopy.exe"; Parameters: "C:\robot-one\lib\librobotOne.dll C:\robot-one\python\Lib\site-packages /y"; Tasks: install_python; StatusMsg: "Python support: Merging libraries"; Flags: runhidden
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

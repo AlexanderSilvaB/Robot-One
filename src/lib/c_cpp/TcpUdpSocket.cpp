@@ -4,7 +4,7 @@
 typedef int socklen_t;
 #endif
 
-TcpUdpSocket::TcpUdpSocket(int port, char* address, bool udp, bool broadcast, bool reusesock, bool isServer, int timeout)
+TcpUdpSocket::TcpUdpSocket(int port, const char* address, bool udp, bool broadcast, bool reusesock, bool isServer, int timeout)
 {
 	connected = false;
 	received[0] = '\0';

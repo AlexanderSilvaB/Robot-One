@@ -2,6 +2,8 @@
 
 echo "Robot-One Linux Installer"
 
+
+cd ../../src
 echo "Compiling C/C++ Library..."
 cd lib/c_cpp
 mkdir -p build-linux
@@ -28,5 +30,7 @@ echo "Hint: The matlab examples still do not work out-of-the-box"
 
 echo "Setting Python path"
 echo "export PYTHONPATH=\"${PYTHONPATH}:${HOME}/robot-one/lib/python\"" >> ~/.bashrc
+
+cd ../installer/Linux
 
 echo "Done!"

@@ -1,0 +1,2 @@
+O 10, 5, wall\model.obj, 5
+R 0, 0, 0

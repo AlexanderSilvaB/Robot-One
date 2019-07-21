@@ -29,7 +29,7 @@ typedef struct
     float *readings, *angles, *x, *y;
 }LidarData;
 
-extern_c int connectRobotOne(char *address);
+extern_c int connectRobotOne(const char *address);
 extern_c int disconnectRobotOne();
 extern_c float versionRobotOne();
 extern_c float waitRobotOne();
@@ -41,15 +41,18 @@ extern_c float setData(char *name, int size, char *data);
 extern_c float setDataFloat(char *name, int size, float *data);
 
 extern_c void initLidar(LidarData *lidarData, int size);
-extern_c void readLidar(LidarData *lidarData);
+extern_c int readLidar(LidarData *lidarData);
 extern_c void initCamera(CameraData *cameraData);
-extern_c void captureCamera(CameraData *cameraData);
+extern_c int captureCamera(CameraData *cameraData);
 extern_c void getPose(Value3 *pose);
 extern_c void setPose(Value3 *pose);
 extern_c void getOdometry(Value3 *pose);
 extern_c void setOdometry(Value3 *pose);
 extern_c void getOdometryStd(Value2 *odometryStd);
 extern_c void setOdometryStd(Value2 *odometryStd);
+extern_c void getGPS(Value3 *gps);
+extern_c void getGPSStd(Value3 *gpsStd);
+extern_c void setGPSStd(Value3 *gpsStd);
 extern_c void getVelocity(Value2 *velocity);
 extern_c void setVelocity(Value2 *velocity);
 extern_c bool getLowLevelControl();

@@ -1,4 +1,4 @@
-from ctypes import*
+from ctypes import *
 import math
 import os
 
@@ -17,6 +17,8 @@ def fixAngle(rad):
     rad = math.fmod(rad, math.pi * 2)
     if rad > math.pi:
         rad = rad - (2 * math.pi)
+    elif rad < -math.pi:
+        rad = rad + (2 * math.pi)
     return rad
 
 def connect(address = None):
@@ -74,7 +76,10 @@ def readLidar(rone):
     return angles, data, x, y
 
 def captureCamera(rone):
-    sz = int(get(rone, "Camera.Capture"))
+    szf = get(rone, "Camera.Capture")
+    if szf <> 230400.0:
+        return 0, None 
+    sz = int(szf)
     rone.getData.restype = POINTER(c_ubyte * sz)
     data = rone.getData()
     return sz, data
@@ -114,6 +119,13 @@ def odometry(rone):
     theta = get(rone, "Odometry.Theta")
     return (x, y, theta)
 
+def gps(rone):
+    x = get(rone, "GPS.X")
+    y = get(rone, "GPS.Y")
+    theta = get(rone, "GPS.Theta")
+    return (x, y, theta)
+
+
 def odometryStd(rone, std = None):
     if std == None:
         l = get(rone, "Odometry.Std.Linear")
@@ -122,6 +134,17 @@ def odometryStd(rone, std = None):
         l = set(rone, "Odometry.Std.Linear", std[0])
         a = set(rone, "Odometry.Std.Angular", std[1])
     return (l, a)
+
+def gpsStd(rone, std = None):
+    if std == None:
+        x = get(rone, "GPS.Std.X")
+        y = get(rone, "GPS.Std.Y")
+        theta = get(rone, "GPS.Std.Theta")
+    else:
+        x = set(rone, "GPS.Std.X", std[0])
+        y = set(rone, "GPS.Std.Y", std[1])
+        theta = set(rone, "GPS.Std.Theta", std[2])
+    return (x, y, theta)
 
 def velocity(rone, v = None):
     if v == None:

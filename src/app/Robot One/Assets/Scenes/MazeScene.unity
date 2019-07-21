@@ -1008,7 +1008,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 30, y: 10}
-  m_SizeDelta: {x: -80, y: 30}
+  m_SizeDelta: {x: -80, y: 60}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1276673501
 MonoBehaviour:
@@ -1203,6 +1203,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1620028520}
+    - target: {fileID: 114104347546429660, guid: 92f22f57bc804c94aaa37a7032abf80a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1620028522}
     - target: {fileID: 1024504925248950, guid: 92f22f57bc804c94aaa37a7032abf80a, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1229,11 +1234,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1934703919}
-    - target: {fileID: 114104347546429660, guid: 92f22f57bc804c94aaa37a7032abf80a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1620028522}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92f22f57bc804c94aaa37a7032abf80a, type: 3}
 --- !u!114 &1282331639 stripped
@@ -2029,7 +2029,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1934703917}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 250, y: 1, z: 250}
+  m_LocalPosition: {x: 250, y: 0, z: 250}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1324053751}

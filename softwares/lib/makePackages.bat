@@ -14,6 +14,8 @@ REM copy /Y x86\4.9.2\librobotOne.dll x64\librobotOne.dll
 copy /Y "..\..\src\lib\matlab\robotOne" x64\matlab\robotOne
 copy /Y "..\..\src\lib\python\robotOne.py" robotOne.py
 
+copy /Y robotOne.h x64\matlab\robotOne\robotOne.h
+
 copy /Y x64\4.9.2\librobotOne.dll x64\matlab\robotOne\librobotOne_R2014a.dll
 copy /Y x64\4.9.2\librobotOne.dll x64\matlab\robotOne\librobotOne_R2014b.dll
 copy /Y x64\4.9.2\librobotOne.dll x64\matlab\robotOne\librobotOne_R2015a.dll

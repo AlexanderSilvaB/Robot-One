@@ -5,6 +5,7 @@ import numpy as np
 
 handler = ro.connect()
 ro.trace(handler, True)
+ro.odometryStd(handler, [0, 0])
 
 MaxV = 5.0
 road_color_min = np.array([0, 0, 0],np.uint8)
@@ -13,6 +14,8 @@ road_color_max = np.array([255, 90, 180],np.uint8)
 try:
     while True:
         sz, buff = ro.captureCamera(handler)
+        if sz <> 230400:
+            continue
         img = ro.cameraToCV(buff)
 
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -38,6 +41,7 @@ try:
         
 
         ro.velocity(handler, [MaxV, w])
+        ro.wait(handler)
 
         cv2.imshow("image", img)
         cv2.imshow("mask", mask)
