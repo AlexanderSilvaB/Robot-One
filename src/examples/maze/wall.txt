@@ -1,2 +1,2 @@
-O 10, 5, wall\model.obj, 5
+O 10, 5, wall\model.obj, 0.3, 5
 R 6, 5, 0

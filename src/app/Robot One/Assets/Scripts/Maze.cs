@@ -264,7 +264,7 @@ public class Maze : MonoBehaviour
 
 		string id;
 		int x1, y1, x2, y2, tmp;
-        float s1, s2, s3;
+        float s1, s2, s3, rotx, roty, rotz;
 		for(int i = 0; i < textLines.Length; i++)
 		{
             if (textLines[i].StartsWith("#"))
@@ -351,13 +351,26 @@ public class Maze : MonoBehaviour
 
                 if (parts.Length > 4)
                 {
-                    s1 = float.Parse(parts[4]);
-                    if (parts.Length > 5)
+                    rotx = 0;
+                    roty = 0;
+                    rotz = float.Parse(parts[4]);
+                }
+                else
+                {
+                    rotx = 0;
+                    roty = 0;
+                    rotz = 0;
+                }
+
+                if (parts.Length > 5)
+                {
+                    s1 = float.Parse(parts[5]);
+                    if (parts.Length > 6)
                     {
-                        s2 = float.Parse(parts[5]);
-                        if (parts.Length > 6)
+                        s2 = float.Parse(parts[6]);
+                        if (parts.Length > 7)
                         {
-                            s3 = float.Parse(parts[6]);
+                            s3 = float.Parse(parts[7]);
                         }
                         else
                         {
@@ -379,6 +392,7 @@ public class Maze : MonoBehaviour
 
                 obj.Scale = new Vector3(s1, s2, s3);
                 obj.Position = new Vector3(-y1, y + obj.Scale.y, x1);
+                obj.Rotation = new Vector3(roty, -rotz * Mathf.Rad2Deg, rotx);
                 obj.Path = System.IO.Path.Combine(root, file);
                 
                 objs.Add(obj);
@@ -458,6 +472,8 @@ public class Maze : MonoBehaviour
             model.transform.SetParent(transform);
             model.transform.position = obj.Position;
             model.transform.localScale = obj.Scale;
+            model.transform.rotation = Quaternion.Euler(obj.Rotation);
+
             Rigidbody rb = model.AddComponent<Rigidbody>();
             MeshCollider collider = model.AddComponent<MeshCollider>();
             collider.convex = true;
