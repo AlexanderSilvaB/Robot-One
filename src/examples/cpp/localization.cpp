@@ -1,4 +1,4 @@
-#include <robotOne.h>
+#include <robotOne/robotOne.h>
 #include <iostream>
 #include <KFs/EKF.hpp>
 #include <vector>
@@ -19,17 +19,18 @@ using namespace cv;
 using namespace dlib;
 #endif
 
+typedef EKF<double, 3, 2, 2, 2> Robot;
 
-void model(Matrix<double, 3, 1> &x, Matrix<double, 2, 1> &u, double dt)
+void model(Robot::State &x, Robot::Input &u, double dt)
 {
-	Matrix<double, 3, 1> dx;
+	Robot::State dx;
 	dx << cos(x(2)) * u(0) * dt,
 		sin(x(2)) * u(0) * dt,
 		u(1) * dt;
 	x = x + dx;
 }
 
-void sensor(Matrix<double, 2, 1> &y, Matrix<double, 3, 1> &x, Matrix<double, 2, 1> &d, double dt)
+void sensor(Robot::Output &y, Robot::State &x, Robot::Data &d, double dt)
 {
 	double dx, dy;
 	dx = d(0) - x(0);
@@ -38,14 +39,14 @@ void sensor(Matrix<double, 2, 1> &y, Matrix<double, 3, 1> &x, Matrix<double, 2, 
 		atan2(dy, dx) - x(2);
 }
 
-void modelJ(Matrix<double, 3, 3> &F, Matrix<double, 3, 1> &x, Matrix<double, 2, 1> &u, double dt)
+void modelJ(Robot::ModelJacobian &F, Robot::State &x, Robot::Input &u, double dt)
 {
 	F << 1, 0, -sin(x(2)) * u(0) * dt,
 		0, 1, cos(x(2)) * u(0) * dt,
 		0, 0, 1;
 }
 
-void sensorJ(Matrix<double, 2, 3> &H, Matrix<double, 3, 1> &x, Matrix<double, 2, 1> &d, double dt)
+void sensorJ(Robot::SensorJacobian &H, Robot::State &x, Robot::Data &d, double dt)
 {
 	double dx, dy, ds, dv, dn1, dn2;
 	dx = d(0) - x(0);
@@ -61,6 +62,15 @@ void sensorJ(Matrix<double, 2, 3> &H, Matrix<double, 3, 1> &x, Matrix<double, 2,
 
 int main(int argc, char *argv[])
 {
+#ifdef USE_DLIB
+	string trainingFile = "boxes.svm";
+	if(argc > 1)
+	{
+		trainingFile = argv[1];
+	}
+	cout << "Training file: " << trainingFile << endl;
+#endif
+
 	// Connects to Robot One
 	int handler = connectRobotOne("127.0.0.1");
 	if (!handler)
@@ -92,8 +102,10 @@ int main(int argc, char *argv[])
 	Value3 pose;
 	getPose(&pose);
 
-	Matrix<double, 3, 1> x0;
-	x0 << (double)pose.values[0], (double)pose.values[1], (double)pose.values[2];
+	Robot::State x0;
+	x0 << (double)pose.values[0], 
+		  (double)pose.values[1], 
+		  (double)pose.values[2];
 
 	EKF<double, 3, 2, 2, 2> ekf(x0);
 	ekf.setModel(model);
@@ -102,13 +114,13 @@ int main(int argc, char *argv[])
 	ekf.setSensorJacobian(sensorJ);
 	ekf.seed();
 
-	auto Q = ekf.createQ();
+	Robot::ModelCovariance Q;
 	Q << sigma_x_x * sigma_x_x, 0, 0,
 		0, sigma_x_y*sigma_x_y, 0,
 		0, 0, sigma_x_a*sigma_x_a;
 	ekf.setQ(Q);
 
-	auto R = ekf.createR();
+	Robot::SensorCovariance R;
 	R << sigma_y_r * sigma_y_r, 0,
 		0, sigma_y_b*sigma_y_b;
 	ekf.setR(R);
@@ -118,7 +130,7 @@ int main(int argc, char *argv[])
 	// C 19 -4 1 1
 	// C 26 4 1 1
 	// C 35 -4 1 1
-	auto D = ekf.createData();
+	Robot::Data D;
 	D << 14, 4;
 	ekf.addData(D);
 	D << 19, -4;
@@ -130,15 +142,16 @@ int main(int argc, char *argv[])
 	// ----------------
 
 	// Kalman filter variables
-	auto xK = ekf.state();
-	auto u = ekf.input();
+	Robot::State xK;
+	Robot::Input u;
 	u << Vlinear, Vangular;
-	std::vector< Matrix<double, 2, 1> > ys;
+
+	std::vector< Robot::Output > ys;
 	std::vector<double> X, Y, XK, YK;
 
 	// Image processing variables
 	const double FMM = 37;
-	const double BOX_H = 2000;
+	const double BOX_H = 1500;
 	const double SENSOR_H = 40;
 	const double FOV = 30;
 
@@ -149,7 +162,7 @@ int main(int argc, char *argv[])
 	typedef scan_fhog_pyramid<pyramid_down<6> > image_scanner_type;
 	image_scanner_type scanner;
 	object_detector<image_scanner_type> detector;
-	deserialize("../boxes.svm") >> detector;
+	deserialize(trainingFile) >> detector;
 #else
 	Mat mask;
 	Scalar box_color_min(50, 100, 20);
@@ -220,8 +233,9 @@ int main(int argc, char *argv[])
 				double bearing = -FOV * 0.0174533 * ((cx - 160.0) / 160.0);
 				double range = ((FMM*BOX_H*cameraData.height) / (r.height*SENSOR_H)) / 1000.0;
 
-				auto y = ekf.output();
+				Robot::Output y;
 				y << range, bearing;
+				//cout << y << endl;
 				ys.push_back(y);
 
 
