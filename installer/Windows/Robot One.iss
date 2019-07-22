@@ -39,7 +39,7 @@ Name: "install_matlab"; Description: "Install Matlab support (Not supported in 3
 [Files]
 Source: "{#FilesFolder}\build\Windows\Robot One.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#FilesFolder}\build\Windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#FilesFolder}\src\examples\*"; Excludes: "build*"; DestDir: "{app}\examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#FilesFolder}\src\examples\*"; Excludes: "build*,.vs*"; DestDir: "{app}\examples"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#FilesFolder}\softwares\modpath.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#FilesFolder}\softwares\matlab.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#FilesFolder}\docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs
