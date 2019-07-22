@@ -188,6 +188,18 @@ def wheels(rone, v = None):
         r = set(rone, "Velocity.Angular.Right", v[1])
     return (l, r)
 
+def manual(rone, enabled = None):
+    if enabled == None:
+        e = get(rone, "Controller.Manual")
+    else:
+        v = 0.0
+        if enabled:
+            v = 1.0
+        e = set(rone, "Controller.Manual", v)
+    if e > 0:
+        return True
+    return False
+
 if __name__ == "__main__":
     mb = connect("127.0.0.1")
     v = version(mb)

@@ -4,10 +4,21 @@
 #include <vector>
 #include <cmath>
 #include <fstream>
+#include <sstream>
 #include <opencv2/opencv.hpp>
+
+#ifdef USE_DLIB
+#include <dlib/opencv.h>
+#include <dlib/image_processing.h>
+#include <dlib/data_io.h>
+#endif
 
 using namespace std;
 using namespace cv;
+#ifdef USE_DLIB
+using namespace dlib;
+#endif
+
 
 void model(Matrix<double, 3, 1> &x, Matrix<double, 2, 1> &u, double dt)
 {
@@ -62,8 +73,7 @@ int main(int argc, char *argv[])
 	setTrace(false);
 
 	// Select some velocities
-	float Vlinear = 3;
-	//float Vangular = 0.1;
+	float Vlinear = 1;
 	float Vangular = 0;
 
 	// Initializes the camera data structure
@@ -104,12 +114,10 @@ int main(int argc, char *argv[])
 	ekf.setR(R);
 
 	// Landmarks-------
-	/*
-	C 14 4 1 1
-	C 19 -4 1 1
-	C 26 4 1 1
-	C 35 -4 1 1
-	*/
+	// C 14 4 1 1
+	// C 19 -4 1 1
+	// C 26 4 1 1
+	// C 35 -4 1 1
 	auto D = ekf.createData();
 	D << 14, 4;
 	ekf.addData(D);
@@ -125,32 +133,34 @@ int main(int argc, char *argv[])
 	auto xK = ekf.state();
 	auto u = ekf.input();
 	u << Vlinear, Vangular;
-	vector< Matrix<double, 2, 1> > ys;
-	vector<double> X, Y, XK, YK;
+	std::vector< Matrix<double, 2, 1> > ys;
+	std::vector<double> X, Y, XK, YK;
 
 	// Image processing variables
 	const double FMM = 37;
-	const double BOX_H = 1000;
+	const double BOX_H = 2000;
 	const double SENSOR_H = 40;
 	const double FOV = 30;
 
-	Mat rgb, bgr, mask;
+	Mat rgb, bgr;
 	rgb = Mat::zeros(cameraData.height, cameraData.width, CV_8UC3);
+#ifdef USE_DLIB
+	// Dlib
+	typedef scan_fhog_pyramid<pyramid_down<6> > image_scanner_type;
+	image_scanner_type scanner;
+	object_detector<image_scanner_type> detector;
+	deserialize("../boxes.svm") >> detector;
+#else
+	Mat mask;
 	Scalar box_color_min(50, 100, 20);
 	Scalar box_color_max(70, 180, 140);
+#endif
 
 	// Sets the odometry errors
 	Value2 odometryStd;
 	odometryStd.values[0] = sigma_x_x;
 	odometryStd.values[1] = sigma_x_a;
 	setOdometryStd(&odometryStd);
-
-	// Sets the initial position
-	Value3 pose0;
-	pose0.values[0] = x0(0);
-	pose0.values[1] = x0(1);
-	pose0.values[2] = x0(2);
-	setPose(&pose0);
 
 	// Sets the velocities
 	Value2 velocity;
@@ -177,33 +187,49 @@ int main(int argc, char *argv[])
 			cvtColor(rgb, bgr, COLOR_RGB2BGR);
 			flip(bgr, bgr, 0);
 
-			// Create the mask image
-			inRange(bgr, box_color_min, box_color_max, mask);
-
 			// Find boxes
 			ys.clear();
-			vector<vector<Point> > contours;
-			findContours(mask, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
-			for (int i = 0; i < contours.size(); i++)
+
+			cout << "Detecting..." << endl;
+#ifdef USE_DLIB
+			cv_image<bgr_pixel> cimg(bgr);
+			std::vector<dlib::rectangle> boxes = detector(cimg);
+#else
+			// Create the mask image
+			inRange(bgr, box_color_min, box_color_max, mask);
+			vector<vector<Point> > boxes;
+			findContours(mask, boxes, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+#endif
+			cout << "Detected: " << boxes.size() << endl;
+
+			for (int i = 0; i < boxes.size(); i++)
 			{
-				Rect r = boundingRect(contours[i]);
+#ifdef USE_DLIB
+				dlib::rectangle dlibr = boxes[i];
+				cv::Rect r(dlibr.left(), dlibr.top(), dlibr.width(), dlibr.height());
+#else
+				Rect r = boundingRect(boxes[i]);
+#endif
+
 				double a = r.area();
 				if (a < 20)
 					continue;
 				int cx = r.x + r.width / 2;
 				int cy = r.y + r.height / 2;
-				
-				double bearing = FOV * 0.0174533 * ( (cx - 160.0) / 160.0 );
-				double range = ( (FMM*BOX_H*cameraData.height) / (r.height*SENSOR_H) ) / 1000.0;
+
+				double bearing = -FOV * 0.0174533 * ((cx - 160.0) / 160.0);
+				double range = ((FMM*BOX_H*cameraData.height) / (r.height*SENSOR_H)) / 1000.0;
 
 				auto y = ekf.output();
 				y << range, bearing;
 				ys.push_back(y);
-				//cout << "Y(" << i << ") = " << y << endl;
+
+
+				cv::rectangle(bgr, r, Scalar(0, 0, 255));
 			}
 
 			// Show the image
-			imshow("image", mask);
+			imshow("image", bgr);
 			waitKey(1);
 		}
 
@@ -231,8 +257,6 @@ int main(int argc, char *argv[])
 		t += dt;
 	}
 
-	// Disable trace
-	setTrace(false);
 	// Disconnects from the simulator
 	disconnectRobotOne();
 	return 0;

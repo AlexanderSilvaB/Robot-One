@@ -61,5 +61,7 @@ extern_c bool getTrace();
 extern_c void setTrace(bool enabled);
 extern_c void getWheels(Value2 *wheels);
 extern_c void setWheels(Value2 *wheels);
+extern_c bool getManualController();
+extern_c void setManualController(bool enabled);
 
 #endif

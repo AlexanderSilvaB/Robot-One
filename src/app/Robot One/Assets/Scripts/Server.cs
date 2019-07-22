@@ -15,6 +15,9 @@ public class Server : MonoBehaviour
     public ManualController manualController;
     public CameraSelector WorldCameraSelector;
 
+    public bool Connected { get; private set; }
+    public string ClientName { get; private set; }
+
     private readonly System.Object m_lock = new System.Object();
     private Thread thread;
     private bool running;
@@ -45,6 +48,9 @@ public class Server : MonoBehaviour
 
         receiveBytes = new byte[921600];
 
+        Connected = false;
+        ClientName = "";
+
         GetCameraImage();
 
         IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
@@ -61,6 +67,8 @@ public class Server : MonoBehaviour
     {
         running = false;
         tcpServer.Stop();
+        Connected = false;
+        ClientName = "";
     }
 
     void FixedUpdate()
@@ -106,6 +114,8 @@ public class Server : MonoBehaviour
             {
                 TcpClient tcpClient = tcpServer.AcceptTcpClient();
                 manualController.Enabled = false;
+                Connected = true;
+                ClientName = ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString();
                 tcpClient.Client.ReceiveTimeout = 1000;
                 tcpClient.Client.SendTimeout = 1000;
                 int zeroCtn = 0;
@@ -281,6 +291,8 @@ public class Server : MonoBehaviour
                             }
                             else if (name == "Trace")
                                 ret = kinematics.Trace ? 1.0f : 0.0f;
+                            else if (name == "Controller.Manual")
+                                ret = manualController.Enabled ? 1.0f : 0.0f;
                         }
                         else
                         {
@@ -376,6 +388,11 @@ public class Server : MonoBehaviour
                                 kinematics.GPSStd.z = value;
                                 ret = kinematics.GPSStd.z;
                             }
+                            else if (name == "Controller.Manual")
+                            {
+                                manualController.Enabled = value > 0;
+                                ret = manualController.Enabled ? 1.0f : 0.0f;
+                            }
                         }
 
                         byte[] data;
@@ -407,6 +424,8 @@ public class Server : MonoBehaviour
                 }
                 tcpClient.Close();
                 manualController.Enabled = true;
+                Connected = false;
+                ClientName = "";
             }
             catch (Exception ex)
             {
@@ -414,5 +433,7 @@ public class Server : MonoBehaviour
             }
         }
         tcpServer.Stop();
+        Connected = false;
+        ClientName = "";
     }
 }

@@ -243,7 +243,11 @@ public class Maze : MonoBehaviour
 
 	private void LoadTextMaze(string filePath)
 	{
-		Clear();
+        //Scripts.GameLanguage.CodeRunner runner = new Scripts.GameLanguage.CodeRunner();
+        //var result = runner.Compile("for(int i = 0; i < 200; i++){setVelocity(2.0f, 0.0f); wait();}");
+        //runner.Run(result);
+
+        Clear();
 		string[] textLines = File.ReadAllLines(filePath);
 	
 		float x, z;
@@ -374,7 +378,7 @@ public class Maze : MonoBehaviour
                 }
 
                 obj.Scale = new Vector3(s1, s2, s3);
-                obj.Position = new Vector3(y1, y + obj.Scale.y, x1);
+                obj.Position = new Vector3(-y1, y + obj.Scale.y, x1);
                 obj.Path = System.IO.Path.Combine(root, file);
                 
                 objs.Add(obj);
@@ -383,16 +387,16 @@ public class Maze : MonoBehaviour
 
 		for(int i = 0; i < points.Count; i++)
 		{
-			x = points[i].y;
+			x = -points[i].y;
 			z = points[i].x;
 			Instantiate(Cell, new Vector3(x, y, z), Quaternion.identity, transform);
 		}
 
         for (int i = 0; i < walls.Count; i++)
         {
-            x1 = (int)walls[i].y;
+            x1 = -(int)walls[i].y;
             y1 = (int)walls[i].x;
-            x2 = (int)walls[i].w;
+            x2 = -(int)walls[i].w;
             y2 = (int)walls[i].z;
             float cx = (x1 + x2) / 2.0f;
             float cy = (y1 + y2) / 2.0f;
@@ -413,7 +417,7 @@ public class Maze : MonoBehaviour
 
         for (int i = 0; i < cubes.Count; i++)
 		{
-			x = cubes[i].y;
+			x = -cubes[i].y;
 			z = cubes[i].x;
 			GameObject cube = Instantiate(Cube, new Vector3(x, y + 1 + cubes[i].w, z), Quaternion.identity, transform);
             cube.transform.localScale = new Vector3(cubes[i].z, cubes[i].w, cubes[i].z);
@@ -421,7 +425,7 @@ public class Maze : MonoBehaviour
 
 		for(int i = 0; i < balls.Count; i++)
 		{
-			x = balls[i].y;
+			x = -balls[i].y;
 			z = balls[i].x;
             GameObject ball = Instantiate(Ball, new Vector3(x, y + balls[i].z, z), Quaternion.identity, transform);
             ball.transform.localScale = new Vector3(balls[i].z, balls[i].z, balls[i].z);
@@ -429,9 +433,9 @@ public class Maze : MonoBehaviour
 
 		for(int i = 0; i < lines.Count; i++)
 		{
-			x1 = (int)lines[i].y;
+			x1 = -(int)lines[i].y;
 			y1 = (int)lines[i].x;
-			x2 = (int)lines[i].w;
+			x2 = -(int)lines[i].w;
 			y2 = (int)lines[i].z;
 			Vector3[] positions = new Vector3[2];
 			positions[0].x = lines[i].y;
@@ -462,7 +466,7 @@ public class Maze : MonoBehaviour
 
         if (changeRobot)
 		{
-			Robot.position = new Vector3(rz, 0.86f, rx);
+			Robot.position = new Vector3(-rz, 0.86f, rx);
             Robot.rotation = Quaternion.Euler(0, -rth * Mathf.Rad2Deg, 0);
         }
 	}

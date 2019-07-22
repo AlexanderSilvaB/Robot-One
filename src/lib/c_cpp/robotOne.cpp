@@ -375,3 +375,13 @@ extern_c void setWheels(Value2 *wheels)
 	set("Velocity.Angular.Left", wheels->values[0]);
 	set("Velocity.Angular.Right", wheels->values[1]);
 }
+
+extern_c bool getManualController()
+{
+	return get("Controller.Manual") > 0;
+}
+
+extern_c void setManualController(bool enabled)
+{
+	set("Controller.Manual", enabled ? 1.0f : 0.0f);
+}

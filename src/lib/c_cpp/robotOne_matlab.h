@@ -55,5 +55,7 @@ bool getTrace();
 void setTrace(bool enabled);
 void getWheels(Value2 *wheels);
 void setWheels(Value2 *wheels);
+bool getManualController();
+void setManualController(bool enabled);
 
 #endif

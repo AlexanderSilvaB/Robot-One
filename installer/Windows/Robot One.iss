@@ -22,7 +22,7 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 ;OutputDir=C:\Users\alexa\Documents\Robot-One\src\installer\Windows
 OutputDir=.
-OutputBaseFilename=RobotOneSetup
+OutputBaseFilename=robotOne-windows-x86_64
 Compression=lzma
 SolidCompression=yes
 
