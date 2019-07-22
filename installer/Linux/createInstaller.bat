@@ -14,7 +14,7 @@ rmdir /s /q robotOne-linux-x86_64\robotOne-linux-x86_64\lib\c_cpp\build-linux
 rmdir /s /q robotOne-linux-x86_64\robotOne-linux-x86_64\lib\c_cpp\export
 rmdir /s /q robotOne-linux-x86_64\robotOne-linux-x86_64\lib\c_cpp\.vs
 rmdir /s /q robotOne-linux-x86_64\robotOne-linux-x86_64\lib\c_cpp\.vscode
-rmdir /s /q robotOne-linux-x86_64\robotOne-linux-x86_64\examples\cpp\CMakeSettings.json
+rmdir /s /q robotOne-linux-x86_64\robotOne-linux-x86_64\lib\c_cpp\CMakeSettings.json
 rmdir /s /q robotOne-linux-x86_64\robotOne-linux-x86_64\examples\cpp\build
 rmdir /s /q robotOne-linux-x86_64\robotOne-linux-x86_64\examples\cpp\build-linux
 rmdir /s /q robotOne-linux-x86_64\robotOne-linux-x86_64\examples\cpp\.vs
