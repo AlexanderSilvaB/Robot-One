@@ -3,9 +3,12 @@
 # See https://unity3d.com/get-unity/download/archive
 # to get download URLs
 UNITY_DOWNLOAD_CACHE="$(pwd)/unity_download_cache"
-UNITY_OSX_PACKAGE_URL="https://download.unity3d.com/download_unity/46dda1414e51/MacEditorInstaller/Unity-2017.2.0f3.pkg"
-UNITY_WINDOWS_TARGET_PACKAGE_URL="https://beta.unity3d.com/download/46dda1414e51/MacEditorTargetInstaller/UnitySetup-Windows-Support-for-Editor-2017.2.0f3.pkg"
-
+#UNITY_OSX_PACKAGE_URL="https://download.unity3d.com/download_unity/46dda1414e51/MacEditorInstaller/Unity-2017.2.0f3.pkg"
+UNITY_OSX_PACKAGE_URL="https://download.unity3d.com/download_unity/20c1667945cf/MacEditorInstaller/Unity.pkg"
+# UNITY_WINDOWS_TARGET_PACKAGE_URL="https://beta.unity3d.com/download/46dda1414e51/MacEditorTargetInstaller/UnitySetup-Windows-Support-for-Editor-2017.2.0f3.pkg"
+UNITY_WINDOWS_TARGET_PACKAGE_URL="https://download.unity3d.com/download_unity/20c1667945cf/MacEditorTargetInstaller/UnitySetup-Windows-Mono-Support-for-Editor-2019.2.0f1.pkg"
+# UNITY_LINUX_TARGET_PACKAGE_URL="https://beta.unity3d.com/download/46dda1414e51/MacEditorTargetInstaller/UnitySetup-Windows-Support-for-Editor-2017.2.0f3.pkg"
+UNITY_LINUX_TARGET_PACKAGE_URL="https://download.unity3d.com/download_unity/20c1667945cf/MacEditorTargetInstaller/UnitySetup-Linux-Support-for-Editor-2019.2.0f1.pkg"
 
 # Downloads a file if it does not exist
 download() {
@@ -40,3 +43,4 @@ ls $UNITY_DOWNLOAD_CACHE
 echo "Installing Unity..."
 install $UNITY_OSX_PACKAGE_URL
 install $UNITY_WINDOWS_TARGET_PACKAGE_URL
+install $UNITY_LINUX_TARGET_PACKAGE_URL
