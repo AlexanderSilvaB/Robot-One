@@ -1,4 +1,6 @@
 # Robot One
+[![Build Status](https://travis-ci.com/AlexanderSilvaB/Robot-One.svg?branch=master)](https://travis-ci.com/AlexanderSilvaB/Robot-One)
+
 Robot One is a Robotics Simulator created by Alexander Silva Barbosa as a Graduation Work at the Federal University of Juiz de Fora - UFJF
 
 ## Install
