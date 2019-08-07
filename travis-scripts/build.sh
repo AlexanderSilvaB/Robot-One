@@ -1,40 +1,56 @@
 #! /bin/sh
 
-# Example build script for Unity3D project. See the entire example: https://github.com/JonathanPorta/ci-build
+PROJECT_PATH=$(pwd)/$UNITY_PROJECT_PATH
+UNITY_BUILD_DIR=$(pwd)/Build
+LOG_FILE=$UNITY_BUILD_DIR/unity-win.log
 
-# Change this the name of your project. This will be the name of the final executables as well.
-project="RobotOne"
-prjPath="$(pwd)/src/app/Robot One"
 
-echo "Attempting to build $project for Windows"
+ERROR_CODE=0
+echo "Items in project path ($PROJECT_PATH):"
+ls "$PROJECT_PATH"
+
+
+echo "Building project for Windows..."
+mkdir $UNITY_BUILD_DIR
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
   -silent-crashes \
   -logFile $(pwd)/unity.log \
-  -projectPath $(pwd) \
-  -buildWindowsPlayer "$(pwd)/Build/windows/$project.exe" \
+  -projectPath "$PROJECT_PATH" \
+  -buildWindows64Player  "$(pwd)/build/win/RobotOne.exe" \
   -quit
 
-echo "Attempting to build $project for OS X"
+echo "Building project for OS X..."
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
   -silent-crashes \
   -logFile $(pwd)/unity.log \
-  -projectPath $(pwd) \
-  -buildOSXUniversalPlayer "$(pwd)/Build/osx/$project.app" \
+  -projectPath "$PROJECT_PATH" \
+  -buildOSXUniversalPlayer "$(pwd)/build/osx/RobotOne.app" \
   -quit
 
-echo "Attempting to build $project for Linux"
+echo "Building project for Linux..."
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
   -silent-crashes \
   -logFile $(pwd)/unity.log \
-  -projectPath $(pwd) \
-  -buildLinuxUniversalPlayer "$(pwd)/Build/linux/$project" \
+  -projectPath "$PROJECT_PATH" \
+  -buildLinuxUniversalPlayer "$(pwd)/build/linux/RobotOne"  \
   -quit
+  
+if [ $? = 0 ] ; then
+  echo "Building completed successfully."
+  ERROR_CODE=0
+else
+  echo "Building failed. Exited with $?."
+  ERROR_CODE=1
+fi
 
 echo 'Logs from build'
 cat $(pwd)/unity.log
+
+echo "Finishing with code $ERROR_CODE"
+exit $ERROR_CODE

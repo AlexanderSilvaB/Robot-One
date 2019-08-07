@@ -1,11 +1,42 @@
 #! /bin/sh
 
-# Example install script for Unity3D project. See the entire example: https://github.com/JonathanPorta/ci-build
+# See https://unity3d.com/get-unity/download/archive
+# to get download URLs
+UNITY_DOWNLOAD_CACHE="$(pwd)/unity_download_cache"
+UNITY_OSX_PACKAGE_URL="https://download.unity3d.com/download_unity/46dda1414e51/MacEditorInstaller/Unity-2017.2.0f3.pkg"
+UNITY_WINDOWS_TARGET_PACKAGE_URL="https://beta.unity3d.com/download/46dda1414e51/MacEditorTargetInstaller/UnitySetup-Windows-Support-for-Editor-2017.2.0f3.pkg"
 
-# This link changes from time to time. I haven't found a reliable hosted installer package for doing regular
-# installs like this. You will probably need to grab a current link from: http://unity3d.com/get-unity/download/archive
-echo 'Downloading from http://netstorage.unity3d.com/unity/3757309da7e7/MacEditorInstaller/Unity-5.2.2f1.pkg: '
-curl -o Unity.pkg http://netstorage.unity3d.com/unity/3757309da7e7/MacEditorInstaller/Unity-5.2.2f1.pkg
 
-echo 'Installing Unity.pkg'
-sudo installer -dumplog -package Unity.pkg -target /
+# Downloads a file if it does not exist
+download() {
+
+	URL=$1
+	FILE=`basename "$URL"`
+	
+	# Downloads a package if it does not already exist in cache
+	if [ ! -e $UNITY_DOWNLOAD_CACHE/`basename "$URL"` ] ; then
+		echo "$FILE does not exist. Downloading from $URL: "
+		mkdir -p "$UNITY_DOWNLOAD_CACHE"
+		curl -o $UNITY_DOWNLOAD_CACHE/`basename "$URL"` "$URL"
+	else
+		echo "$FILE Exists. Skipping download."
+	fi
+}
+
+# Downloads and installs a package from an internet URL
+install() {
+	PACKAGE_URL=$1
+	download $1
+
+	echo "Installing `basename "$PACKAGE_URL"`"
+	sudo installer -dumplog -package $UNITY_DOWNLOAD_CACHE/`basename "$PACKAGE_URL"` -target /
+}
+
+
+
+echo "Contents of Unity Download Cache:"
+ls $UNITY_DOWNLOAD_CACHE
+
+echo "Installing Unity..."
+install $UNITY_OSX_PACKAGE_URL
+install $UNITY_WINDOWS_TARGET_PACKAGE_URL
