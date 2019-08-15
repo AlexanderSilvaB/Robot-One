@@ -49,3 +49,6 @@ sysinfo.txt
 # Executables
 installer/Windows/*.exe
 installer/Linux/*.zip
+
+# Docs
+docs/lib/html/
