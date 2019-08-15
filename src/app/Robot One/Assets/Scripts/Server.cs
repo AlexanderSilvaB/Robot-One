@@ -103,7 +103,28 @@ public class Server : MonoBehaviour
         RenderTexture.active = RobotCamera.targetTexture;
         cameraImage.ReadPixels(cameraImageRect, 0, 0);
         RenderTexture.active = null;
+        cameraImage = Flip(cameraImage);
         cameraImageBytes = cameraImage.GetRawTextureData();
+    }
+
+    Texture2D Flip(Texture2D original)
+    {
+        // We create a new texture so we don't change the old one!
+        Texture2D flip = new Texture2D(original.width, original.height, TextureFormat.RGB24, false);
+
+        // These for loops are for running through each individual pixel and then replacing them in the new texture.
+        for (int i = 0; i < flip.width; i++)
+        {
+            for (int j = 0; j < flip.height; j++)
+            {
+                flip.SetPixel(flip.width - i - 1, j, original.GetPixel(i, j));
+            }
+        }
+
+        // We apply the changes to our new texture
+        flip.Apply();
+        // Then we send it on our marry little way!
+        return flip;
     }
 
     private void ServerThread()

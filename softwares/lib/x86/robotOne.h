@@ -27,12 +27,12 @@ int connectRobotOne(const char *address);
 int disconnectRobotOne();
 float versionRobotOne();
 float waitRobotOne();
-float get(char *name);
-float set(char *name, float value);
+float get(const char *name);
+float set(const char *name, float value);
 char* getData();
 float* getDataFloat();
-float setData(char *name, int size, char *data);
-float setDataFloat(char *name, int size, float *data);
+float setData(const char *name, int size, char *data);
+float setDataFloat(const char *name, int size, float *data);
 
 void initLidar(LidarData *lidarData, int size);
 int readLidar(LidarData *lidarData);

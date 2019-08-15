@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
 
 			// Fix the image for opencv
 			cvtColor(rgb, bgr, COLOR_RGB2BGR);
-			flip(bgr, bgr, 0);
+			// flip(bgr, bgr, 0);
 
 			// Find boxes
 			ys.clear();

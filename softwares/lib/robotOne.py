@@ -86,13 +86,13 @@ def captureCamera(rone):
 
 def cameraToPil(data):
     im = Image.frombuffer("RGB", (320, 240), data.contents, "raw", "RGB", 0, 1)
-    im = im.transpose(Image.FLIP_TOP_BOTTOM)
+    # im = im.transpose(Image.FLIP_TOP_BOTTOM)
     return im
 
 def cameraToCV(data):
     arr = np.ctypeslib.as_array((c_ubyte * 230400).from_address(addressof(data.contents)))
     im = arr.reshape(240,320,3)
-    im = cv2.flip( im, 0 )
+    # im = cv2.flip( im, 0 )
     im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
     return im
 

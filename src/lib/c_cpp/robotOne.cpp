@@ -101,7 +101,7 @@ extern_c float* getDataFloat()
 	return (float*)dataContainer;
 }
 
-extern_c float get(char *name)
+extern_c float get(const char *name)
 {
 	if (s == NULL || !s->isConnected())
 		return 0.0f;
@@ -120,7 +120,7 @@ extern_c float get(char *name)
 	return retValue;
 }
 
-extern_c float set(char *name, float value)
+extern_c float set(const char *name, float value)
 {
 	if (s == NULL || !s->isConnected())
 		return 0.0f;
@@ -142,7 +142,7 @@ extern_c float set(char *name, float value)
 	return retValue;
 }
 
-extern_c float setData(char *name, int size, char *data)
+extern_c float setData(const char *name, int size, char *data)
 {
 	if (s == NULL || !s->isConnected())
 		return 0.0f;
@@ -173,7 +173,7 @@ extern_c float setData(char *name, int size, char *data)
 	return retValue;
 }
 
-extern_c float setDataFloat(char *name, int size, float *data)
+extern_c float setDataFloat(const char *name, int size, float *data)
 {
 	if (s == NULL || !s->isConnected())
 		return 0.0f;

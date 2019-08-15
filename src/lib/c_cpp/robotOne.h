@@ -33,12 +33,12 @@ extern_c int connectRobotOne(const char *address);
 extern_c int disconnectRobotOne();
 extern_c float versionRobotOne();
 extern_c float waitRobotOne();
-extern_c float get(char *name);
-extern_c float set(char *name, float value);
+extern_c float get(const char *name);
+extern_c float set(const char *name, float value);
 extern_c char* getData();
 extern_c float* getDataFloat();
-extern_c float setData(char *name, int size, char *data);
-extern_c float setDataFloat(char *name, int size, float *data);
+extern_c float setData(const char *name, int size, char *data);
+extern_c float setDataFloat(const char *name, int size, float *data);
 
 extern_c void initLidar(LidarData *lidarData, int size);
 extern_c int readLidar(LidarData *lidarData);

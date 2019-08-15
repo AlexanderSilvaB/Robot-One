@@ -4,7 +4,9 @@ function image = captureCamera(handler)
         data = getDataFloat(handler);
         setdatatype(data, 'uint8Ptr', sz);
         image = reshape(fliplr(reshape(data.value, 3, numel(data.value)/3).'),[320 240 3]);
-        image = flip(permute(image, [2 1 3]), 1);
+        % image = flip(permute(image, [2 1 3]), 1);
+	% image = flip(image, 2);
+	image = permute(image, [2 1 3]);
         tmp = image(:,:,1);
         image(:,:,1) = image(:,:,3);
         image(:,:,3) = tmp;

@@ -1,6 +1,7 @@
 @echo off
 
 copy /Y ..\..\src\lib\c_cpp\robotOne_matlab.h robotOne.h
+xcopy.exe "../../src/lib/matlab" "x64/matlab" /y /i /s /e
 
 copy /Y robotOne.h x64\matlab\robotOne\robotOne.h
 

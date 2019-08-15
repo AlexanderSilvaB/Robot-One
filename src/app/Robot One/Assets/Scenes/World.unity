@@ -572,6 +572,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114442352403073964, guid: 7585db4f5fd7b084789354da689180fd,
+        type: 3}
+      propertyPath: WorldCameraSelector
+      value: 
+      objectReference: {fileID: 334350765}
     - target: {fileID: 114960102517224784, guid: 7585db4f5fd7b084789354da689180fd,
         type: 3}
       propertyPath: CameraTitle
@@ -609,11 +614,51 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114442352403073964, guid: 7585db4f5fd7b084789354da689180fd,
+    - target: {fileID: 4571757915829248, guid: 7585db4f5fd7b084789354da689180fd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571757915829248, guid: 7585db4f5fd7b084789354da689180fd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571757915829248, guid: 7585db4f5fd7b084789354da689180fd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571757915829248, guid: 7585db4f5fd7b084789354da689180fd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571757915829248, guid: 7585db4f5fd7b084789354da689180fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 20362214678905868, guid: 7585db4f5fd7b084789354da689180fd,
         type: 3}
-      propertyPath: WorldCameraSelector
-      value: 
-      objectReference: {fileID: 334350765}
+      propertyPath: m_projectionMatrixMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 20362214678905868, guid: 7585db4f5fd7b084789354da689180fd,
+        type: 3}
+      propertyPath: field of view
+      value: 60.000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 20362214678905868, guid: 7585db4f5fd7b084789354da689180fd,
+        type: 3}
+      propertyPath: m_FocalLength
+      value: 44.167297
+      objectReference: {fileID: 0}
+    - target: {fileID: 20362214678905868, guid: 7585db4f5fd7b084789354da689180fd,
+        type: 3}
+      propertyPath: m_SensorSize.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 20362214678905868, guid: 7585db4f5fd7b084789354da689180fd,
+        type: 3}
+      propertyPath: m_SensorSize.y
+      value: 51
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7585db4f5fd7b084789354da689180fd, type: 3}
 --- !u!114 &376016357 stripped
