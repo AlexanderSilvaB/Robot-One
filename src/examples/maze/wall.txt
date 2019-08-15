@@ -1,5 +1,0 @@
-# O = Obj, X = 10, Y = 5, Path = "wall\model.obj", Rotation = 0.3, Scale = 5
-O 10, 5, wall\model.obj, 0.3, 5
-
-# R = Robot, X = 6, Y = 5, Theta = 0
-R 6, 5, 0
