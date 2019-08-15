@@ -51,4 +51,4 @@ installer/Windows/*.exe
 installer/Linux/*.zip
 
 # Docs
-docs/lib/html/
+docs/html/
