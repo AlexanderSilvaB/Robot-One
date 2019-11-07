@@ -7,9 +7,16 @@ function handler = connectRobotOne(address)
     v = ['R' version('-release')];
     if not(libisloaded('librobotOne'))
         try
-            loadlibrary(['librobotOne_' v], 'robotOne.h', 'alias', 'librobotOne');
+            if ispc
+                strLib = ['librobotOne_' v];
+            else
+                strLib = ['librobotOne'];
+            end
+            loadlibrary(strLib, 'robotOne.h', 'alias', 'librobotOne');
             disp('Loaded Robot One')
         catch EX
+            txt = getReport(EX);
+            disp(txt)
             handler = 0;
             return
         end

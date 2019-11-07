@@ -2,12 +2,26 @@
 
 echo "Robot-One Linux Installer"
 
+echo "Installing requirements"
+sudo apt-get install gcc-4.9 g++-4.9
+if which g++-4.9 >/dev/null; then
+    echo "GCC-4.9 - OK"
+else
+   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+   sudo cp /etc/apt/sources.list ./sources.list.bkp
+   sudo sh -c "echo 'deb http://dk.archive.ubuntu.com/ubuntu/ xenial main' >> /etc/apt/sources.list"
+   sudo sh -c "echo 'deb http://dk.archive.ubuntu.com/ubuntu/ xenial universe' >> /etc/apt/sources.list"
+   sudo apt update && sudo apt install gcc-4.9 g++-4.9
+   sudo cp ./sources.list.bkp /etc/apt/sources.list
+   sudo apt-get update
+   sudo apt-get upgrade libstdc++6
+fi
 
 echo "Compiling C/C++ Library..."
 cd lib/c_cpp
 mkdir -p build-linux
 cd build-linux
-cmake ..
+cmake -D CMAKE_C_COMPILER=gcc-4.9 -D CMAKE_CXX_COMPILER=g++-4.9 ..
 make
 echo "Installing C/C++ Library..."
 sudo make install
