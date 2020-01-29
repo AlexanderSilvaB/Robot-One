@@ -14,11 +14,21 @@ function handler = connectRobotOne(address)
             end
             loadlibrary(strLib, 'robotOne.h', 'alias', 'librobotOne');
             disp('Loaded Robot One')
-        catch EX
-            txt = getReport(EX);
-            disp(txt)
-            handler = 0;
-            return
+        catch EX1
+            try
+                if ispc
+                    strLib = ['C:/robot-one/lib/matlab/librobotOne_' v];
+                else
+                    strLib = ['/usr/local/lib/librobotOne.so'];
+                end
+                loadlibrary(strLib, 'robotOne.h', 'alias', 'librobotOne');
+                disp('Loaded Robot One')
+            catch EX
+                txt = getReport(EX);
+                disp(txt)
+                handler = 0;
+                return
+            end
         end
     end
     

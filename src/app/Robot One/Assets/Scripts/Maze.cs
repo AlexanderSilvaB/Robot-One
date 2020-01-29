@@ -6,6 +6,7 @@ using System.IO;
 using System;
 using System.Linq;
 using SFB;
+using SimpleFileBrowser;
 
 public class Maze : MonoBehaviour 
 {
@@ -40,6 +41,7 @@ public class Maze : MonoBehaviour
 
 	public void LoadMazeFromFile()
 	{
+		/*
 		var extensions = new [] 
 		{
 			new ExtensionFilter("Maze Files", "png", "jpg", "jpeg", "bmp", "txt" ),
@@ -49,10 +51,24 @@ public class Maze : MonoBehaviour
         string[] path = StandaloneFileBrowser.OpenFilePanel("Select a maze file", "", extensions, false);
 		if(path.Length > 0)
 			LoadMaze(path[0]);
+		*/
+		FileBrowser.SetFilters( true, 
+			new FileBrowser.Filter("Maze Files", ".png", ".jpg", ".jpeg", ".bmp", ".txt" ),
+			new FileBrowser.Filter("Image Files", ".png", ".jpg", ".jpeg", ".bmp" ),
+			new FileBrowser.Filter("Text files", ".txt" )
+		);
+		FileBrowser.ShowLoadDialog( LoadMaze, onCancelDialog, false, null, "Select a maze file", "Select" );
+	}
+
+	private void onCancelDialog()
+	{
+
 	}
 
 	public void LoadMaze(string filePath)
 	{
+		if(filePath == null)
+			return;
 		if (!File.Exists(filePath))    
 			return;
 
